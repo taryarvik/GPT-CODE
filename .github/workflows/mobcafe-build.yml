@@ -23,6 +23,7 @@ jobs:
           unzip -oq mobcafe-source.zip
           mkdir -p bridge
           xz -dc mobcafe-lite-bridge.jar.xz > bridge/MobCafe-Lite-0.9.10-UI-Bridge.jar
+          python3 patch_api_263.py
       - name: Tests
         run: |
           bash tests/run_tests.sh
