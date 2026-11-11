@@ -1,0 +1,43 @@
+name: Build Mob Cafe 1.0 NeoForge
+on:
+  push:
+    branches: [mobcafe-v1-build]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "25"
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "9.2.1"
+      - name: Unpack source and legacy bridge
+        run: |
+          unzip -oq mobcafe-source.zip
+          mkdir -p bridge
+          xz -dc mobcafe-lite-bridge.jar.xz > bridge/MobCafe-Lite-0.9.10-UI-Bridge.jar
+      - name: Tests
+        run: |
+          bash tests/run_tests.sh
+          bash tests/run_orders.sh
+          python3 tests/verify_bridge.py
+      - name: Build NeoForge Java addon
+        run: gradle clean build --stacktrace --no-daemon
+      - name: Verify compiled Java addon
+        run: |
+          find build/libs -name "*.jar" -maxdepth 1 -type f -print
+          jar tf build/libs/*.jar | grep 'com/mobcafeui/order/LiteOrderBridge.class'
+      - name: Upload game mods
+        uses: actions/upload-artifact@v4
+        with:
+          name: MobCafe-1.0-Java-and-Lite-Bridge
+          path: |
+            build/libs/*.jar
+            bridge/MobCafe-Lite-0.9.10-UI-Bridge.jar

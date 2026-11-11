@@ -1,0 +1,3 @@
+# Mob Café 1.0 — experimental Java GUI and custom food orders
+
+Separate build branch for Minecraft 26.3 + NeoForge. The source is packaged in `mobcafe-source.zip`, and the legacy Lite compatibility layer is stored compressed as `mobcafe-lite-bridge.jar.xz`. GitHub Actions extracts both, tests, compiles and uploads the mod pair. **Do not install the source ZIP or use the Lite bridge without the compiled Java addon.** Back up your Minecraft world first.
