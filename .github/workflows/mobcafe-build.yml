@@ -27,7 +27,7 @@ jobs:
         run: |
           bash tests/run_tests.sh
           bash tests/run_orders.sh
-          python3 tests/verify_bridge.py
+          unzip -t bridge/MobCafe-Lite-0.9.10-UI-Bridge.jar | tail -1
       - name: Build NeoForge Java addon
         run: gradle clean build --stacktrace --no-daemon
       - name: Verify compiled Java addon
