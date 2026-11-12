@@ -18,3 +18,13 @@ p.write_text(s)
 p=root/'neoforge/CafeEvents.java'; s=p.read_text().replace('import net.neoforged.neoforge.event.level.BlockEvent;', 'import net.neoforged.neoforge.event.level.block.BreakBlockEvent;').replace('BlockEvent.BreakEvent event', 'BreakBlockEvent event');p.write_text(s)
 p=root/'neoforge/client/CafeClient.java'; s=p.read_text().replace('mc.screen instanceof','mc.gui.screen() instanceof').replace('mc.setScreen(new CafeScreen(view))','mc.gui.setScreen(new CafeScreen(view))');p.write_text(s)
 print('Applied Minecraft 26.3 source fixes')
+
+# Network IDs are namespaced identifiers, not default-namespace paths.
+p=root/'neoforge/net/CafeNetwork.java'
+s=p.read_text()
+s=s.replace('import net.minecraft.network.RegistryFriendlyByteBuf;', 'import net.minecraft.network.RegistryFriendlyByteBuf;\nimport net.minecraft.resources.Identifier;')
+s=s.replace('CustomPacketPayload.createType("mobcafe:cafe_view")', 'new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath("mobcafe", "cafe_view"))')
+s=s.replace('CustomPacketPayload.createType("mobcafe:cafe_action")', 'new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath("mobcafe", "cafe_action"))')
+assert 'CustomPacketPayload.createType(' not in s
+p.write_text(s)
+print('Fixed network payload identifiers (mobcafe:cafe_view, mobcafe:cafe_action)')
