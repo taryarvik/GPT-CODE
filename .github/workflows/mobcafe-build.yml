@@ -24,11 +24,14 @@ jobs:
           mkdir -p bridge
           xz -dc mobcafe-lite-bridge.jar.xz > bridge/MobCafe-Lite-0.9.10-UI-Bridge.jar
           python3 patch_api_263.py
+          base64 -d mobcafe-beta-overlay.b64 > mobcafe-beta-overlay.zip
+          unzip -oq mobcafe-beta-overlay.zip
+          python3 patch_bridge_beta.py
       - name: Tests
         run: |
           bash tests/run_tests.sh
           bash tests/run_orders.sh
-          unzip -t bridge/MobCafe-Lite-0.9.10-UI-Bridge.jar | tail -1
+          python3 tests/check_beta.py
       - name: Build NeoForge Java addon
         run: gradle clean build --stacktrace --no-daemon
       - name: Verify compiled Java addon
@@ -38,7 +41,7 @@ jobs:
       - name: Upload game mods
         uses: actions/upload-artifact@v4
         with:
-          name: MobCafe-1.0-Java-and-Lite-Bridge
+          name: MobCafe-1.0.0-Beta1-Tavern-GUI-Orders
           path: |
             build/libs/*.jar
             bridge/MobCafe-Lite-0.9.10-UI-Bridge.jar
