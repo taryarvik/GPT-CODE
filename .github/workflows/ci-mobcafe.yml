@@ -29,6 +29,19 @@ jobs:
         run: |
           cd MobCafe-2.0-NeoForge-WIP
           gradle clean assemble runCoreSelfTest --stacktrace
+      - name: Boot server smoke test
+        run: |
+          cd MobCafe-2.0-NeoForge-WIP
+          mkdir -p run run/server
+          echo 'eula=true' > run/eula.txt
+          echo 'eula=true' > run/server/eula.txt
+          set +e
+          timeout 125s gradle runServer --stacktrace > server-boot.log 2>&1
+          STATUS=$?
+          echo "Server exit: $STATUS"
+          grep -nE 'Exception|Caused by|ERROR|Error|Done \(' server-boot.log | tail -100 || true
+          tail -120 server-boot.log
+          exit 0
       - name: Upload logs and JAR
         if: always()
         uses: actions/upload-artifact@v4
@@ -37,4 +50,5 @@ jobs:
           path: |
             MobCafe-2.0-NeoForge-WIP/build/libs/*.jar
             MobCafe-2.0-NeoForge-WIP/build/reports/
+            MobCafe-2.0-NeoForge-WIP/server-boot.log
           if-no-files-found: warn
