@@ -24,6 +24,7 @@ jobs:
           cat ci/mobcafe-src.part* | base64 --decode > /tmp/mobcafe-src.tar.xz
           sha256sum /tmp/mobcafe-src.tar.xz
           tar -xJf /tmp/mobcafe-src.tar.xz
+          python ci/patch-26_3.py
       - name: Build and test
         run: |
           cd MobCafe-2.0-NeoForge-WIP
