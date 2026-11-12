@@ -27,6 +27,7 @@ jobs:
           base64 -d mobcafe-beta-overlay.b64 > mobcafe-beta-overlay.zip
           unzip -oq mobcafe-beta-overlay.zip
           python3 patch_bridge_beta.py
+          sed -i "s/sp.getServer()/((net.minecraft.server.level.ServerLevel) sp.level()).getServer()/g" src/main/java/com/mobcafeui/menu/RestaurantMenu.java
       - name: Tests
         run: |
           bash tests/run_tests.sh
