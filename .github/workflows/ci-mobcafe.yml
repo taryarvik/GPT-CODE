@@ -28,7 +28,7 @@ jobs:
       - name: Build and test
         run: |
           cd MobCafe-2.0-NeoForge-WIP
-          gradle clean build runCoreSelfTest --stacktrace
+          gradle clean assemble runCoreSelfTest --stacktrace
       - name: Upload logs and JAR
         if: always()
         uses: actions/upload-artifact@v4
