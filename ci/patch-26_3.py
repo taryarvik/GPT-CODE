@@ -28,3 +28,10 @@ s=s.replace('CustomPacketPayload.createType("mobcafe:cafe_action")', 'new Custom
 assert 'CustomPacketPayload.createType(' not in s
 p.write_text(s)
 print('Fixed network payload identifiers (mobcafe:cafe_view, mobcafe:cafe_action)')
+
+# The management wand recipe schema changed in Minecraft 26.3.
+# Temporarily remove the unverified recipe; wand remains registered and /give works.
+recipe=Path('MobCafe-2.0-NeoForge-WIP/src/main/resources/data/mobcafe/recipe/management_wand.json')
+if recipe.exists():
+    recipe.unlink()
+    print('Removed incompatible wand recipe for startup compatibility')
