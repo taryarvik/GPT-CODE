@@ -4,6 +4,7 @@ on:
     branches: [mobcafe-2-java25-ci]
     paths:
       - 'ci/mobcafe-src.part*'
+      - 'ci/patch-26_3.py'
       - '.github/workflows/ci-mobcafe.yml'
   workflow_dispatch:
 jobs:
